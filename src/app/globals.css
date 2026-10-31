@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-ink: #0a1022;
+  --color-ice: #e8edf7;
+  --color-mist: #a7b2c7;
+  --color-accent: var(--accent);
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+}
+
+/*
+ * The section's indicator colour, set on the shell. Registering it as a <color> lets it
+ * transition, so every accent in the DOM follows the 3D tint from one section to the next.
+ */
+@property --accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #9bb4ff;
+}
+
+/* Archivo's width axis: the display type is set expanded and light. */
+@utility font-expanded {
+  font-variation-settings: "wdth" 122;
+}
+
+:root {
+  color-scheme: dark;
+  /* Tallest a section panel may grow before it scrolls: viewport minus header and nav. */
+  --panel-max: calc(100dvh - 10.5rem);
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --panel-max: calc(100dvh - 9.5rem);
+  }
+}
+
+.accent-shell {
+  transition: --accent 900ms cubic-bezier(0.22, 0.7, 0.2, 1);
+}
+
+/* What shows before the scene fades in, and instead of it when WebGL is unavailable. */
+.light-pool {
+  background-image: radial-gradient(
+    46rem 38rem at 50% 50%,
+    color-mix(in oklab, var(--accent) 16%, transparent),
+    transparent 72%
+  );
+}
+
+.hero-scrim {
+  background: radial-gradient(
+    ellipse 56% 50% at 50% 54%,
+    rgb(10 16 34 / 0.5),
+    rgb(10 16 34 / 0.24) 62%,
+    transparent 100%
+  );
+}
+
+/* Nodes pass behind the hero text, so the letters carry a little of the dark with them. */
+.hero-text {
+  text-shadow: 0 1px 18px rgb(10 16 34 / 0.8);
+}
+
+/* Frosted panel for the dense sections. The scene stays visible through and around it. */
+.glass-panel {
+  padding: 1.25rem;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 1.25rem;
+  background: rgb(10 16 34 / 0.46);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.07);
+  backdrop-filter: blur(14px) saturate(1.3);
+}
+
+@media (min-width: 64rem) {
+  .glass-panel {
+    padding: 2rem 2.25rem;
+  }
+}
+
+.panel-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255 255 255 / 0.18) transparent;
+}
+
+:where(a, button):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accent-shell {
+    transition: none;
+  }
+}
